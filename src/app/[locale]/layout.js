@@ -1,5 +1,5 @@
 import { Outfit } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 // Configuración óptima de la tipografía Outfit
 const outfit = Outfit({
