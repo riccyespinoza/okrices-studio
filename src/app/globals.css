@@ -1,26 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Forzamos tus colores corporativos base para el fondo y texto del sitio */
+  --background: #EDE7E2; /* Beige cálido */
+  --foreground: #0D1419; /* Azul profundo */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Vinculamos de forma prioritaria la tipografía Outfit */
+  --font-sans: var(--font-outfit), sans-serif;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Inyectamos la paleta exacta de Okrices Studio */
+  --color-studio-blue: #0D1419;
+  --color-studio-copper: #A55130;
+  --color-studio-beige: #EDE7E2;
+  --color-studio-nude: #D1B7A1;
+  --color-studio-smoke: #4A5568;
+  --color-studio-octopus: #51372B;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
