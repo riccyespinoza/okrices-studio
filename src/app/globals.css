@@ -23,3 +23,27 @@ body {
   background: var(--background);
   color: var(--foreground);
 }
+
+/* * --- UTILITIES DE DIRECCIÓN DE ARTE EVOLUCIONADA (ORGANIC PREMIUM) ---
+ * Suavizado de líneas y liberación de color puro para el mercado de Florida.
+ */
+
+/* 1. Fondo de firma premium con profundidad infinita */
+@utility studio-main-container {
+  @apply min-h-screen bg-[#0A0F12] text-white overflow-hidden;
+}
+
+/* 2. Tarjeta Bento con esquinas orgánicas suaves, relieve tridimensional y micro-borde de cristal */
+@utility studio-card {
+  @apply relative bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.06] rounded-2xl p-8 md:p-10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:border-studio-copper/50 hover:from-white/[0.06] hover:to-white/[0.02] shadow-[0_20px_50px_rgba(0,0,0,0.5)];
+}
+
+/* 3. Ventana de medios viva: muestra el color original y radiante de tus mockups desde el inicio */
+@utility studio-media-window {
+  @apply relative w-full overflow-hidden bg-neutral-900 border border-white/[0.06] rounded-xl transition-all duration-700 ease-out;
+}
+
+/* 4. Separador minimalista invisible para grandes espacios ordenados */
+@utility studio-section-divider {
+  @apply border-t border-white/[0.03] py-20 md:py-32;
+}
