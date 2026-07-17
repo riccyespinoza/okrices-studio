@@ -1,9 +1,11 @@
 import { Outfit } from "next/font/google";
 import "./globals.css";
+// 1. Importa tu componente Providers
+import Providers from "@/components/layout/Providers"; 
 
-// Cargamos e inyectamos la tipografía de forma única y global
 const outfit = Outfit({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "800"],
   variable: "--font-outfit",
   display: "swap",
 });
@@ -15,10 +17,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    // Proveemos las etiquetas obligatorias una sola vez para toda la aplicación y el CMS
     <html lang="es" className={`${outfit.variable} h-full antialiased`}>
-      <body className="h-full bg-[#0D1419] text-white antialiased">
-        {children}
+      <body className="h-full text-white antialiased">
+        {/* 2. Envuelve {children} con Providers */}
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

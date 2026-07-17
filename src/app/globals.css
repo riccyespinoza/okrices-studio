@@ -1,22 +1,69 @@
 @import "tailwindcss";
 
 :root {
-  /* Forzamos tus colores corporativos base para el fondo y texto del sitio */
-  --background: #EDE7E2; /* Beige cálido */
-  --foreground: #0D1419; /* Azul profundo */
+  --background: #EDE7E2;
+  --foreground: #0D1419;
 }
 
 @theme inline {
-  /* Vinculamos de forma prioritaria la tipografía Outfit */
   --font-sans: var(--font-outfit), sans-serif;
 
-  /* Inyectamos la paleta exacta de Okrices Studio */
+  /* === Paleta Oficial Okrices Studio === */
   --color-studio-blue: #0D1419;
   --color-studio-copper: #A55130;
   --color-studio-beige: #EDE7E2;
   --color-studio-nude: #D1B7A1;
   --color-studio-smoke: #4A5568;
   --color-studio-octopus: #51372B;
+  --color-studio-white: #FFFFFF;
+  
+  /* Nuevas variables de color añadidas para exactitud del diseño */
+  --color-studio-card-text: #5C6E7A;
+  --color-studio-cta-sub: #D9D2C6;
+
+  /* Nuevo color de destello para el degradado premium de los iconos */
+  --color-studio-bronze: #B66E41;
+
+  /* CAMBIO SENIOR: Registro del color oficial para el CTA Secundario */
+  --color-studio-navy: #0D1B2A;
+
+  /* === TOKEN DE DISEÑO INTERNO: RADIO UNIFICADO PARA COMPONENTES === */
+  --radius-studio: 1rem;
+
+  /* === INTERLINEADO EXACTO (Line-Height) === */
+  --leading-illustrator: 1.2;
+
+  /* === TIPOGRAFÍA FLUIDA (Segunda Reducción del 5% Aplicada) === */
+  
+  /* Comillas (Sin cambios) */
+  --text-quote: clamp(2.0625rem, calc(2.0375rem + 3.25vw), 5.9375rem);        
+  
+  /* Hero Título (-5% extra): Max 4.1563rem -> 3.9485rem */
+  --text-hero: clamp(1.4102rem, calc(1.5771rem + 1.98vw), 3.9485rem);
+  
+  /* Sección y Números (-5% extra): Max 3.8594rem -> 3.6664rem */
+  --text-section: clamp(0.9589rem, calc(1.0988rem + 2.15vw), 3.6664rem); 
+  
+  /* Tarjetas Título (-5% extra): Max 2.375rem -> 2.2563rem */
+  --text-card-title: clamp(0.5077rem, calc(0.8370rem + 1.18vw), 2.2563rem);  
+  
+  /* Subtítulo Hero (-5% extra): Max 2.0781rem -> 1.9742rem */
+  --text-hero-subtitle: clamp(0.5641rem, calc(0.9589rem + 0.85vw), 1.9742rem); 
+  
+  /* Subtítulo General (-5% extra): Max 1.7813rem -> 1.6922rem */
+  --text-subtitle: clamp(0.4513rem, calc(0.8800rem + 0.68vw), 1.6922rem);    
+  
+  /* Texto Tarjetas / Descripciones (Sin cambios) */
+  --text-body-large: clamp(0.375rem, calc(0.8875rem + 0.56vw), 1.5625rem);   
+  
+  /* Navbar / Comentarios (Apoyo) (Sin cambios) */
+  --text-support: clamp(0.5625rem, calc(0.8000rem + 0.38vw), 1.25rem);      
+  
+  /* Botones (Sin cambios) */
+  --text-button: clamp(0.25rem, calc(0.5175rem + 0.25vw), 0.8125rem);
+  
+  /* Micro etiquetas (Sin cambios) */
+  --text-micro: clamp(0.25rem, calc(0.5175rem + 0.25vw), 0.8125rem);
 }
 
 body {
@@ -24,26 +71,62 @@ body {
   color: var(--foreground);
 }
 
-/* * --- UTILITIES DE DIRECCIÓN DE ARTE EVOLUCIONADA (ORGANIC PREMIUM) ---
- * Suavizado de líneas y liberación de color puro para el mercado de Florida.
- */
+.studio-main-container {
+  min-height: 100vh;
+  background-color: #0D1419;
+  position: relative;
+  overflow-x: hidden;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.1' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E"),
+    radial-gradient(circle at 10% 10%, #17222B 0%, #0D1419 80%),
+    radial-gradient(circle at 90% 90%, #51372B 0%, #0D1419 80%);
+  background-attachment: fixed;
+  background-size: cover;
+}
 
-/* 1. Fondo de firma premium con profundidad infinita */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+@utility animate-marquee {
+  animation: marquee 60s linear infinite;
+}
+
+/* === UTILITIES DE DIRECCIÓN DE ARTE EVOLUCIONADA === */
+
 @utility studio-main-container {
-  @apply min-h-screen bg-[#0A0F12] text-white overflow-hidden;
+  @apply min-h-screen bg-studio-blue text-white overflow-hidden;
 }
 
-/* 2. Tarjeta Bento con esquinas orgánicas suaves, relieve tridimensional y micro-borde de cristal */
 @utility studio-card {
-  @apply relative bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.06] rounded-2xl p-8 md:p-10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:border-studio-copper/50 hover:from-white/[0.06] hover:to-white/[0.02] shadow-[0_20px_50px_rgba(0,0,0,0.5)];
+  @apply relative bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.06] rounded-studio p-8 md:p-10 overflow-hidden flex flex-col justify-between transition-all duration-500 hover:border-studio-copper/50 hover:from-white/[0.06] hover:to-white/[0.02] shadow-[0_20px_50px_rgba(0,0,0,0.5)];
 }
 
-/* 3. Ventana de medios viva: muestra el color original y radiante de tus mockups desde el inicio */
 @utility studio-media-window {
-  @apply relative w-full overflow-hidden bg-neutral-900 border border-white/[0.06] rounded-xl transition-all duration-700 ease-out;
+  @apply relative w-full overflow-hidden bg-studio-blue border border-white/[0.06] rounded-studio transition-all duration-700 ease-out;
 }
 
-/* 4. Separador minimalista invisible para grandes espacios ordenados */
 @utility studio-section-divider {
-  @apply border-t border-white/[0.03] py-20 md:py-32;
+  @apply border-t border-white/[0.00] py-20 md:py-32;
+}
+
+@utility studio-button {
+  @apply rounded-studio uppercase tracking-[0.2em] px-10 py-4 font-medium block transition-all duration-300;
+}
+
+@utility bg-studio-icon-gradient {
+  background: linear-gradient(135deg, #A55130 0%, #B66E41 100%);
+}
+
+/* === NUEVOS CONTENEDORES DE ESPACIADO DE HERO CENTRALIZADOS === */
+
+/* Para páginas principales (Home, Servicios, etc.) */
+@utility studio-hero-main {
+  @apply pt-40 pb-20 md:pt-48 md:pb-28 lg:pt-56 lg:pb-32;
+}
+
+/* Para páginas de soporte/editoriales (FAQ, Privacidad, Términos, etc.) */
+@utility studio-hero-editorial {
+  @apply pt-32 pb-14 md:pt-40 md:pb-20 lg:pt-48 lg:pb-24;
 }

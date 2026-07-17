@@ -1,18 +1,51 @@
+'use client';
+
 import React from "react";
+import { motion } from "framer-motion";
 
-export default function Button({ variant = "primary", className = "", children, ...props }) {
-  const baseStyles = "inline-flex items-center justify-center font-sans font-medium text-sm md:text-base tracking-wide px-6 py-3.5 rounded-lg transition-all duration-300 ease-out focus:outline-none antialiased active:scale-[0.98]";
+export default function Button({ children, variant = "primary", className = "", ...props }) {
+  /* AJUSTE SENIOR: Se inyecta 'rounded-studio' de forma explícita en los baseStyles.
+     Esto previene desalineaciones visuales en el desbordamiento (overflow-hidden) 
+     y blinda el radio ante la sobreescritura de clases personalizadas. */
+  const baseStyles = "relative studio-button text-button font-sans text-center rounded-studio overflow-hidden group";
 
+  // Diccionario de variantes que consumen los tokens globales oficiales
   const variants = {
-    // Botón de acción principal en Cobre con hover suave
-    primary: "bg-studio-copper text-white hover:bg-studio-copper/90 hover:shadow-lg hover:shadow-studio-copper/20",
-    // Botón secundario elegante que se adapta sobre fondos oscuros
-    secondary: "border border-white/20 text-white bg-white/5 hover:bg-white/10 hover:border-white/40",
+    // Estilo Principal: Cobre Corporativo
+    primary: "bg-studio-copper text-studio-white border border-transparent hover:bg-studio-copper/90 shadow-lg",
+    
+    // Estilo Secundario: Transparente con borde refinado
+    secondary: "bg-transparent text-studio-white/80 border border-studio-white/20 hover:text-studio-white hover:border-studio-white",
+    
+    // Tercer Estilo: Invertido Premium de alta conversión para CTAs destacados
+    tertiary: "bg-studio-beige text-studio-blue border border-transparent hover:bg-studio-white shadow-2xl"
   };
 
+  const variantStyles = variants[variant] || variants.primary;
+
   return (
-    <button className={`${baseStyles} ${variants[variant] || variants[primary]} ${className}`} {...props}>
-      {children}
+    <button
+      className={`${baseStyles} ${variantStyles} ${className}`}
+      {...props}
+    >
+      {/* Efecto Shimmer dinámico: Solo se activa en la variante 'tertiary' */}
+      {variant === "tertiary" && (
+        <motion.span
+          className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-studio-white/40 to-transparent pointer-events-none"
+          initial={{ x: "-100%" }}
+          animate={{ x: "100%" }}
+          transition={{
+            repeat: Infinity,
+            repeatType: "loop",
+            duration: 2,
+            ease: "linear",
+          }}
+          style={{ mixBlendMode: "overlay" }}
+        />
+      )}
+
+      {/* Texto del botón con z-index alto para quedar siempre por encima del destello */}
+      <span className="relative z-10">{children}</span>
     </button>
   );
 }

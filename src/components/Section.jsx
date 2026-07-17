@@ -1,10 +1,17 @@
 import React from "react";
 
-export default function Section({ className = "", children, ...props }) {
+export default function Section({ 
+  className = "", 
+  noVerticalPadding = false, 
+  children, 
+  ...props 
+}) {
+  // Determinamos dinámicamente si la sección respira verticalmente por defecto
+  const verticalPadding = noVerticalPadding ? "" : "py-14 md:py-20 lg:py-28";
+
   return (
     <section 
-      // py-16 a py-24 da ese efecto de "mucho espacio" premium sin ser aburrido
-      className={`w-full py-16 md:py-24 lg:py-32 px-6 sm:px-12 md:px-16 lg:px-24 xl:px-32 max-w-[1920px] mx-auto ${className}`}
+      className={`w-full ${verticalPadding} px-5 sm:px-10 md:px-14 lg:px-20 xl:px-28 max-w-[1920px] mx-auto ${className}`}
       {...props}
     >
       {children}

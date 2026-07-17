@@ -1,29 +1,33 @@
 import React from "react";
 
 export function Heading({ level = 1, className = "", children, ...props }) {
-  // Escala tipográfica adaptativa (mobile-first) inspirada en tus gráficos
-  const baseStyles = "font-sans font-semibold tracking-tight text-white antialiased";
+  // Base estructural limpia y tipografía sans oficial (Outfit) sin colisiones de color o interlineado
+  const baseStyles = "font-sans antialiased tracking-tight";
   
-  const sizes = {
-    1: "text-3xl md:text-5xl lg:text-6xl leading-tight", // Títulos de Hero / Grandes mensajes
-    2: "text-2xl md:text-4xl leading-snug",             // Subtítulos de secciones
-    3: "text-xl md:text-2xl leading-normal",            // Títulos de tarjetas o bloques
+  // Mapeo directo y exclusivo a los tokens de fluid-typography declarados en globals.css
+  const structuralDefaults = {
+    1: "text-hero font-semibold leading-none",                  // 70px - Hero Título Principal
+    2: "text-section font-semibold leading-illustrator",        // 65px - Títulos de Sección / Números Proceso
+    3: "text-card-title font-medium leading-illustrator",       // 40px - Títulos de Cards (Servicios, Proceso, Work)
   };
 
   const Tag = `h${level}`;
 
   return (
-    <Tag className={`${baseStyles} ${sizes[level] || sizes[1]} ${className}`} {...props}>
+    <Tag 
+      className={`${baseStyles} ${structuralDefaults[level] || structuralDefaults[1]} ${className}`} 
+      {...props}
+    >
       {children}
     </Tag>
   );
 }
 
 export function Text({ className = "", children, ...props }) {
-  // Texto corporativo sutil, elegante y con aire
+  // Componente de texto atómico libre de opacidades duras y viewports fijos
   return (
     <p 
-      className={`font-sans font-light text-base md:text-lg lg:text-xl text-white/80 leading-relaxed tracking-wide antialiased ${className}`} 
+      className={`font-sans antialiased ${className}`} 
       {...props}
     >
       {children}

@@ -1,8 +1,10 @@
+'use client';
+
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
 export default function LocalizedLink({ href, children, ...props }) {
-  // Extrae de forma dinámica el idioma actual de la URL ([locale])
+  // Extrae de forma dinámica el idioma actual de la URL ([locale]) en el cliente
   const { locale } = useParams();
   
   // Idioma base por defecto configurado en nuestro estudio

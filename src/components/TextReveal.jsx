@@ -6,40 +6,34 @@ import { motion } from "framer-motion";
 export default function TextReveal({ text, className = "" }) {
   if (!text) return null;
 
-  // Parsea las marcas de asteriscos conservando la estructura bilingüe
+  // Separamos el texto por bloques destacados usando los asteriscos
   const parts = text.split(/\*\*([^*]+)\*\*/g);
-  let globalWordIndex = 0;
 
   return (
-    <h1 className={className}>
-      {parts.map((part, partIndex) => {
-        const isHighlighted = partIndex % 2 === 1;
-        const words = part.split(" ");
-
-        return words.map((word, wordIndex) => {
-          if (word === "" && wordIndex > 0) return null;
-          globalWordIndex++;
-
+    // Agregamos un leve padding vertical al contenedor principal para dar espacio a los rasgos tipográficos
+    <h1 className={`${className} py-2 overflow-hidden`}>
+      <motion.span
+        initial={{ y: "40%", opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{
+          duration: 0.9,
+          ease: [0.16, 1, 0.3, 1] // Easing cúbico ultra fluido estilo Framer Studio
+        }}
+        className="block"
+      >
+        {parts.map((part, partIndex) => {
+          const isHighlighted = partIndex % 2 === 1;
           return (
-            <motion.span
-              key={`${partIndex}-${wordIndex}`}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{
-                duration: 0.6,
-                delay: globalWordIndex * 0.02,
-                ease: [0.215, 0.610, 0.355, 1.0] // Easing cúbico ultra fluido
-              }}
-              className={`inline-block mr-[0.25em] ${
-                isHighlighted ? "text-studio-copper font-medium" : "text-white"
-              }`}
+            <span
+              key={partIndex}
+              className={isHighlighted ? "text-studio-copper font-medium" : "text-white"}
             >
-              {word}
-            </motion.span>
+              {part}
+            </span>
           );
-        });
-      })}
+        })}
+      </motion.span>
     </h1>
   );
 }
