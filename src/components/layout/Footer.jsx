@@ -60,7 +60,7 @@ export default function Footer({ currentLocale }) {
             <p className="font-sans font-light text-[var(--color-studio-beige)]/80 text-sm leading-relaxed max-w-sm">
               {t.tagline}
             </p>
-
+{/* 
             <form className="mt-4 flex flex-col gap-3 max-w-sm" onSubmit={(e) => e.preventDefault()}>
               <label className="font-sans text-xs tracking-widest text-[var(--color-studio-beige)]/60 uppercase">
                 {t.newsletterTitle}
@@ -79,7 +79,7 @@ export default function Footer({ currentLocale }) {
                   {t.subscribe}
                 </button>
               </div>
-            </form>
+            </form> */}
           </div>
 
           <div className="lg:col-span-2 lg:col-start-7 flex flex-col gap-6">
@@ -129,7 +129,7 @@ export default function Footer({ currentLocale }) {
 
         </div>
 
-        <div className="mt-20 pt-8 flex flex-col md:flex-row items-center justify-between gap-6 border-t border-white/5">
+        <div className="mt-20 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2 font-sans font-light text-xs text-[var(--color-studio-beige)]/60 tracking-wide">
             <span>© {new Date().getFullYear()} Okrices Studio.</span>
             <span>{t.rights}</span>

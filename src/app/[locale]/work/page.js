@@ -6,16 +6,13 @@ import Button from "@/components/Button";
 import FadeIn from "@/components/FadeIn";
 import TextReveal from "@/components/TextReveal";
 import Magnetic from "@/components/Magnetic";
-import HeroGlow from "@/components/FluidHero";
 import CtaCard from "@/components/CtaCard";
 import PortfolioGrid from "@/components/PortfolioGrid";
-import LocalizedLink from "@/components/LocalizedLink"; // Importante
+import LocalizedLink from "@/components/LocalizedLink";
 
 async function getWorkPageData() {
   const query = `*[_type == "workPage"][0]{
-    heroTitleEs, heroSubtitleEs, heroBtnMainEs, heroBtnSecEs, heroBtnMainLink, heroBtnSecLink,
-    heroTitleEn, heroSubtitleEn, heroBtnMainEn, heroBtnSecEn,
-    introTitleEs, introTextEs, introTitleEn, introTextEn,
+    heroTitleEs, heroSubtitleEs, heroTitleEn, heroSubtitleEn,
     categories,
     projectsList[]{
       name, category, "slug": slug.current,
@@ -40,6 +37,8 @@ export default async function WorkPage({ params }) {
 
   if (!data) return <main className="min-h-screen bg-studio-blue" />;
 
+  const heroSubtitle = locale === "en" ? data.heroSubtitleEn : data.heroSubtitleEs;
+
   return (
     <main className="studio-main-container">
       {/* SECCIÓN ÚNICA: CABECERA, FILTROS Y PROYECTOS INTEGRADOS */}
@@ -52,15 +51,16 @@ export default async function WorkPage({ params }) {
             className="text-hero font-sans font-semibold tracking-[-0.03em] leading-none text-studio-white text-center mx-auto" 
           />
         </div>
- 
 
-        {/* 3. FILTROS Y PROYECTOS */}
+        {/* 2. FILTROS Y PROYECTOS */}
         <div className="w-full flex flex-col items-center">
-          <FadeIn direction="up" className="mb-12 text-center">
-             <Heading level={3} className="text-support text-studio-white/40 uppercase tracking-[0.2em] font-medium mb-4">
-               {locale === "en" ? "Browse by project type" : "Explorar por tipo de proyecto"}
-             </Heading>
-          </FadeIn>
+          {heroSubtitle && (
+            <FadeIn direction="up" className="mb-12 text-center">
+              <Heading level={3} className="text-support text-studio-white/40 uppercase tracking-[0.2em] font-medium mb-4">
+                {heroSubtitle}
+              </Heading>
+            </FadeIn>
+          )}
           
           <div className="w-full">
             <PortfolioGrid 
@@ -72,7 +72,7 @@ export default async function WorkPage({ params }) {
         </div>
       </Section>
 
-      {/* SECCIÓN 5: CTA FINAL */}
+      {/* SECCIÓN 3: CTA FINAL */}
       <Section className="py-24 md:py-32">
         <CtaCard variant="primary">
           <div className="max-w-4xl space-y-8">

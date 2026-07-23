@@ -10,7 +10,7 @@ import Magnetic from "@/components/Magnetic";
 import HeroGlow from "@/components/FluidHero";
 import CtaCard from "@/components/CtaCard";
 import TestimonialsSlider from "@/components/TestimonialsSlider";
-import LocalizedLink from "@/components/LocalizedLink"; // Asegúrate de que esta ruta sea correcta
+import LocalizedLink from "@/components/LocalizedLink";
 import * as motion from "framer-motion/client";
 
 async function getHomeData() {
@@ -20,9 +20,9 @@ async function getHomeData() {
     clientLogos[]{ "imageUrl": logo.asset->url, altText },
     servicesTitleEs, servicesSubtitleEs, servicesTitleEn, servicesSubtitleEn,
     servicesList[]{ ..., "iconUrl": iconSvg.asset->url },
-    methodTitleEs, methodSubtitleEs, methodTitleEn, methodSubtitleEn, methodList[]{ ... },
     projectsTitleEs, projectsSubtitleEs, projectsTitleEn, projectsSubtitleEn, projectsBtnEs, projectsBtnEn, projectsBtnLink,
     projectsList[]{ ..., "imageUrl": image.asset->url },
+    methodTitleEs, methodSubtitleEs, methodTitleEn, methodSubtitleEn, methodList[]{ ... },
     trustTitleEs, trustSubtitleEs, trustTitleEn, trustSubtitleEn, trustList,
     ctaTitleEs, ctaSubtitleEs, ctaBtnEs, ctaBtnLink, ctaTitleEn, ctaSubtitleEn, ctaBtnEn
   }`;
@@ -44,37 +44,40 @@ export default async function HomePage({ params }) {
   const { locale } = await params;
   const data = await getHomeData();
 
-  // 1. TEXTOS HERO Y BOTONES
-  const hTitle = locale === "en" ? (data?.heroTitleEn || "Web design and visual identity for businesses that want to look clear, professional, and ready to grow.") : (data?.heroTitleEs || "Diseño web e identidad visual para negocios que quieren verse claros, profesionales y listos para crecer.");
-  const hSub = locale === "en" ? (data?.heroSubtitleEn || "At Okrices Studio, we combine branding, web development, and strategy to build a digital presence that inspires **trust** and attracts clients.") : (data?.heroSubtitleEs || "En Okrices Studio unimos branding, desarrollo web y estrategia para crear una presencia digital que transmita **confianza** y atraiga clientes.");
-  const hBtnMain = locale === "en" ? (data?.heroBtnMainEn || "Schedule a call") : (data?.heroBtnMainEs || "Agendar llamada");
-  const hBtnSec = locale === "en" ? (data?.heroBtnSecEn || "View projects") : (data?.heroBtnSecEs || "Ver proyectos");
+  // 1. HERO PRINCIPAL
+  const hTitle = locale === "en" ? data?.heroTitleEn : data?.heroTitleEs;
+  const hSub = locale === "en" ? data?.heroSubtitleEn : data?.heroSubtitleEs;
+  const hBtnMain = locale === "en" ? data?.heroBtnMainEn : data?.heroBtnMainEs;
+  const hBtnSec = locale === "en" ? data?.heroBtnSecEn : data?.heroBtnSecEs;
 
-  // 2. SECCIÓN SERVICIOS
-  const sTitle = locale === "en" ? (data?.servicesTitleEn || "Services designed to **communicate value** and turn visits into clients.") : (data?.servicesTitleEs || "Servicios pensados para comunicar **valor** y convertir visitas en clientes.");
-  const sSub = locale === "en" ? (data?.servicesSubtitleEn || "We believe a brand shouldn't shout to be heard, but project quality.") : (data?.servicesSubtitleEs || "Creemos que una marca no debe gritar para ser escuchada, sino proyectar la esencia de un trabajo que habla por sí solo.");
+  // 1.5 LOGOS DE CLIENTES
+  const logos = data?.clientLogos || [];
+
+  // 2. SERVICIOS DESTACADOS
+  const sTitle = locale === "en" ? data?.servicesTitleEn : data?.servicesTitleEs;
+  const sSub = locale === "en" ? data?.servicesSubtitleEn : data?.servicesSubtitleEs;
   const services = data?.servicesList || [];
 
-  // 3. SECCIÓN MÉTODO
-  const mTitle = locale === "en" ? (data?.methodTitleEn || "A **clear process** that helps you move forward with confidence.") : (data?.methodTitleEs || "Un proceso **claro** para avanzar con seguridad.");
-  const mSub = locale === "en" ? (data?.methodSubtitleEn || "We break down complexity into simple, structured, and predictable milestones.") : (data?.methodSubtitleEs || "Dividimos la complejidad en hitos simples, estructurados y completamente predecibles.");
-  const methods = data?.methodList || [];
-
-  // 4. SECCIÓN PROYECTOS
-  const pTitle = locale === "en" ? (data?.projectsTitleEn || "Selected **projects**") : (data?.projectsTitleEs || "Proyectos **seleccionados**");
-  const pSub = locale === "en" ? (data?.projectsSubtitleEn || "Each project reflects a mix of strategy, design, and functionality.") : (data?.projectsSubtitleEs || "Cada proyecto refleja una combinación de estrategia, diseño y funcionalidad.");
-  const pBtnAll = locale === "en" ? (data?.projectsBtnEn || "View all projects") : (data?.projectsBtnEs || "Ver todos los proyectos");
+  // 3. PROYECTOS SELECCIONADOS
+  const pTitle = locale === "en" ? data?.projectsTitleEn : data?.projectsTitleEs;
+  const pSub = locale === "en" ? data?.projectsSubtitleEn : data?.projectsSubtitleEs;
+  const pBtnAll = locale === "en" ? data?.projectsBtnEn : data?.projectsBtnEs;
   const projects = data?.projectsList || [];
 
-  // 5. SECCIÓN CONFIANZA
-  const tTitle = locale === "en" ? (data?.trustTitleEn || "Trust that **shows** in every detail.") : (data?.trustTitleEs || "Confianza que se **nota** en cada detalle.");
-  const tSub = locale === "en" ? (data?.trustSubtitleEn || "We work with a professional approach, clear communication, and careful execution.") : (data?.trustSubtitleEs || "Trabajamos con enfoque profesional, comunicación clara y una entrega cuidada.");
+  // 4. MÉTODO DE TRABAJO
+  const mTitle = locale === "en" ? data?.methodTitleEn : data?.methodTitleEs;
+  const mSub = locale === "en" ? data?.methodSubtitleEn : data?.methodSubtitleEs;
+  const methods = data?.methodList || [];
+
+  // 5. TESTIMONIOS
+  const tTitle = locale === "en" ? data?.trustTitleEn : data?.trustTitleEs;
+  const tSub = locale === "en" ? data?.trustSubtitleEn : data?.trustSubtitleEs;
   const trusts = data?.trustList || [];
 
-  // 6. SECCIÓN CTA FINAL
-  const cTitle = locale === "en" ? (data?.ctaTitleEn || "Ready to **improve** your digital presence?") : (data?.ctaTitleEs || "¿Listo para **mejorar** tu presencia digital?");
-  const cSub = locale === "en" ? (data?.ctaSubtitleEn || "If your business needs a clearer, more professional image aligned with its real value, we can help build it.") : (data?.ctaSubtitleEs || "Si tu negocio necesita una imagen más clara, profesional y alineada con su valor real, podemos ayudarte a construirla.");
-  const cBtnFinal = locale === "en" ? (data?.ctaBtnEn || "Schedule a call") : (data?.ctaBtnEs || "Agendar llamada");
+  // 6. CTA FINAL
+  const cTitle = locale === "en" ? data?.ctaTitleEn : data?.ctaTitleEs;
+  const cSub = locale === "en" ? data?.ctaSubtitleEn : data?.ctaSubtitleEs;
+  const cBtnFinal = locale === "en" ? data?.ctaBtnEn : data?.ctaBtnEs;
 
   return (
     <main className="studio-main-container">
@@ -82,39 +85,67 @@ export default async function HomePage({ params }) {
       <HeroGlow>
         <Section className="flex flex-col items-start justify-center min-h-[95vh] gap-12 pt-32 pb-20">
           <div className="max-w-5xl space-y-8">
-            <TextReveal text={hTitle} className="text-hero font-sans font-semibold tracking-[-0.03em] leading-none text-white" />
-            <div className="max-w-2xl text-hero-subtitle text-white font-light leading-relaxed tracking-wide">
-              {renderHighlightedText(hSub)}
-            </div>
+            {hTitle && <TextReveal text={hTitle} className="text-hero font-sans font-semibold tracking-[-0.03em] leading-none text-white" />}
+            {hSub && (
+              <div className="max-w-2xl text-hero-subtitle text-white font-light leading-relaxed tracking-wide">
+                {renderHighlightedText(hSub)}
+              </div>
+            )}
           </div>
           <FadeIn delay={0.7} direction="up" className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto">
-            <LocalizedLink href={data.heroBtnMainLink || "/"}>
-              <Magnetic>
-                <Button variant="primary" className="studio-button text-button w-full sm:w-auto">
-                  {hBtnMain}
-                </Button>
-              </Magnetic>
-            </LocalizedLink>
-            <LocalizedLink href={data.heroBtnSecLink || "/"}>
-              <Magnetic>
-                <Button variant="secondary" className="studio-button text-button w-full sm:w-auto border border-white/20 text-white/80 hover:text-white hover:border-white">
-                  {hBtnSec}
-                </Button>
-              </Magnetic>
-            </LocalizedLink>
+            {hBtnMain && (
+              <LocalizedLink href={data?.heroBtnMainLink || "/"}>
+                <Magnetic>
+                  <Button variant="primary" className="studio-button text-button w-full sm:w-auto">
+                    {hBtnMain}
+                  </Button>
+                </Magnetic>
+              </LocalizedLink>
+            )}
+            {hBtnSec && (
+              <LocalizedLink href={data?.heroBtnSecLink || "/"}>
+                <Magnetic>
+                  <Button variant="secondary" className="studio-button text-button w-full sm:w-auto border border-white/20 text-white/80 hover:text-white hover:border-white">
+                    {hBtnSec}
+                  </Button>
+                </Magnetic>
+              </LocalizedLink>
+            )}
           </FadeIn>
         </Section>
       </HeroGlow>
 
+      {/* SECCIÓN 1.5: LOGOS DE CLIENTES (MARQUEE) */}
+      {/* {logos.length > 0 && (
+        <Section className="py-12 border-y border-white/[0.06] overflow-hidden">
+          <div className="flex w-full overflow-hidden select-none">
+            <div className="flex shrink-0 items-center justify-around gap-12 min-w-full animate-marquee">
+              {logos.map((item, idx) => (
+                <img key={idx} src={item.imageUrl} alt={item.altText || "Client Logo"} className="h-8 md:h-10 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300" />
+              ))}
+            </div>
+            <div className="flex shrink-0 items-center justify-around gap-12 min-w-full animate-marquee" aria-hidden="true">
+              {logos.map((item, idx) => (
+                <img key={`dup-${idx}`} src={item.imageUrl} alt={item.altText || "Client Logo"} className="h-8 md:h-10 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300" />
+              ))}
+            </div>
+          </div>
+        </Section>
+      )} */}
+
       {/* SECCIÓN 2: SERVICIOS */}
       <Section className="studio-section-divider">
         <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
-          <Heading level={2} className="text-studio-copper">
-            {renderHighlightedText(sTitle)}
-          </Heading>
-          <Text className="text-white font-light text-subtitle leading-illustrator">
-            {renderHighlightedText(sSub)}
-          </Text>
+          {sTitle && (
+            <Heading level={2} className="text-studio-copper">
+              {renderHighlightedText(sTitle)}
+            </Heading>
+          )}
+          {sSub && (
+            <Text className="text-white font-light text-subtitle leading-illustrator">
+              {renderHighlightedText(sSub)}
+            </Text>
+          )}
         </FadeIn>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
@@ -155,7 +186,7 @@ export default async function HomePage({ params }) {
                   <div className="pt-8 mt-auto w-full flex justify-start flex-shrink-0">
                     <LocalizedLink href={item.ctaLink || "/"}>
                       <Button variant="primary" className="w-full sm:w-auto text-button font-medium">
-                        {locale === "en" ? (item.ctaEn || "View Service") : (item.ctaEs || "Ver servicio")}
+                        {locale === "en" ? item.ctaEn : item.ctaEs}
                       </Button>
                     </LocalizedLink>
                   </div>
@@ -165,48 +196,20 @@ export default async function HomePage({ params }) {
           ))}
         </div>
       </Section>
-      
-      {/* SECCIÓN 3: PROCESO */}
-      <Section className="studio-section-divider">
-        <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
-          <Heading level={2} className="text-studio-copper">
-            {renderHighlightedText(mTitle)}
-          </Heading>
-          <Text className="text-white font-light text-subtitle leading-illustrator">
-            {renderHighlightedText(mSub)}
-          </Text>
-        </FadeIn>
-        
-        <div className="flex flex-col w-full">
-          {methods.map((item, index) => (
-            <FadeIn key={index} delay={index * 0.1} direction="up" className="w-full">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-y-4 md:gap-y-0 md:gap-x-8 items-center text-left py-5 md:py-7 border-b border-studio-card-text/30">
-                <div className="md:col-span-2 text-section font-sans font-extrabold text-studio-copper leading-none select-none pointer-events-none">
-                  {item.stepNumber || `0${index + 1}`}
-                </div>
-                <div className="md:col-span-4">
-                  <Heading level={3} className="text-white">
-                    {locale === "en" ? item.titleEn : item.titleEs}
-                  </Heading>
-                </div>
-                <div className="md:col-span-6">
-                  <p className="font-sans font-light text-body-large text-studio-card-text leading-illustrator text-left">
-                    {locale === "en" ? item.descriptionEn : item.descriptionEs}
-                  </p>
-                </div>
-              </div>
-            </FadeIn>
-          ))}
-        </div>
-      </Section>
 
-      {/* SECCIÓN 4: PROYECTOS */}
+      {/* SECCIÓN 3: PROYECTOS SELECCIONADOS */}
       <Section className="studio-section-divider">
         <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
-          <Heading level={2} className="text-studio-copper">
-            {renderHighlightedText(pTitle)}
-          </Heading>
-           
+          {pTitle && (
+            <Heading level={2} className="text-studio-copper">
+              {renderHighlightedText(pTitle)}
+            </Heading>
+          )}
+          {pSub && (
+            <Text className="text-white font-light text-subtitle leading-illustrator">
+              {renderHighlightedText(pSub)}
+            </Text>
+          )}
         </FadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 w-full mb-16">
@@ -236,9 +239,11 @@ export default async function HomePage({ params }) {
                     <Heading level={3} className="text-white group-hover:text-studio-copper transition-colors">
                       {item.name}
                     </Heading>
-                    <p className="font-sans font-light text-body-large leading-illustrator text-studio-card-text">
-                      "{locale === "en" ? item.phraseEn : item.phraseEs}"
-                    </p>
+                    {(locale === "en" ? item.phraseEn : item.phraseEs) && (
+                      <p className="font-sans font-light text-body-large leading-illustrator text-studio-card-text">
+                        "{locale === "en" ? item.phraseEn : item.phraseEs}"
+                      </p>
+                    )}
                   </div>
                   <span className="text-micro uppercase tracking-widest text-studio-copper font-medium bg-studio-copper/10 px-3 py-1 rounded-full font-sans whitespace-nowrap">
                     {locale === "en" ? item.tagEn : item.tagEs}
@@ -249,51 +254,99 @@ export default async function HomePage({ params }) {
           ))}
         </div>
 
-        <FadeIn delay={0.2} direction="up" className="w-full flex justify-center">
-          <LocalizedLink href={data.projectsBtnLink || "/"}>
-            <Magnetic>
-              <Button variant="secondary" className="studio-button text-button border border-white/20 text-white/80 hover:text-white hover:border-white">
-                {pBtnAll}
-              </Button>
-            </Magnetic>
-          </LocalizedLink>
+        {pBtnAll && (
+          <FadeIn delay={0.2} direction="up" className="w-full flex justify-center">
+            <LocalizedLink href={data?.projectsBtnLink || "/"}>
+              <Magnetic>
+                <Button variant="secondary" className="studio-button text-button border border-white/20 text-white/80 hover:text-white hover:border-white">
+                  {pBtnAll}
+                </Button>
+              </Magnetic>
+            </LocalizedLink>
+          </FadeIn>
+        )}
+      </Section>
+
+      {/* SECCIÓN 4: MÉTODO DE TRABAJO */}
+      <Section className="studio-section-divider">
+        <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
+          {mTitle && (
+            <Heading level={2} className="text-studio-copper">
+              {renderHighlightedText(mTitle)}
+            </Heading>
+          )}
+          {mSub && (
+            <Text className="text-white font-light text-subtitle leading-illustrator">
+              {renderHighlightedText(mSub)}
+            </Text>
+          )}
         </FadeIn>
+        
+        <div className="flex flex-col w-full">
+          {methods.map((item, index) => (
+            <FadeIn key={index} delay={index * 0.1} direction="up" className="w-full">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-y-4 md:gap-y-0 md:gap-x-8 items-center text-left py-5 md:py-7 border-b border-studio-card-text/30">
+                <div className="md:col-span-2 text-section font-sans font-extrabold text-studio-copper leading-none select-none pointer-events-none">
+                  {item.stepNumber || `0${index + 1}`}
+                </div>
+                <div className="md:col-span-4">
+                  <Heading level={3} className="text-white">
+                    {locale === "en" ? item.titleEn : item.titleEs}
+                  </Heading>
+                </div>
+                <div className="md:col-span-6">
+                  <p className="font-sans font-light text-body-large text-studio-card-text leading-illustrator text-left">
+                    {locale === "en" ? item.descriptionEn : item.descriptionEs}
+                  </p>
+                </div>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
       </Section>
 
       {/* SECCIÓN 5: TESTIMONIOS */}
       <Section className="studio-section-divider overflow-hidden">
         <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
-          <Heading level={2} className="text-studio-copper">
-            {renderHighlightedText(tTitle)}
-          </Heading>
-          <Text className="text-white font-light text-subtitle leading-illustrator">
-            {renderHighlightedText(tSub)}
-          </Text>
+          {tTitle && (
+            <Heading level={2} className="text-studio-copper">
+              {renderHighlightedText(tTitle)}
+            </Heading>
+          )}
+          {tSub && (
+            <Text className="text-white font-light text-subtitle leading-illustrator">
+              {renderHighlightedText(tSub)}
+            </Text>
+          )}
         </FadeIn>
         <TestimonialsSlider trusts={trusts} locale={locale} />
       </Section>
 
-      {/* SECCIÓN 6: CTA CARD PRINCIPAL (COBRE) */}
+      {/* SECCIÓN 6: CTA FINAL PRINCIPAL */}
       <Section className="py-24 md:py-32">
         <CtaCard variant="primary">
           <div className="max-w-4xl space-y-8">
-            <Heading level={2} className="text-studio-white">
-              {renderHighlightedText(cTitle)}
-            </Heading>
+            {cTitle && (
+              <Heading level={2} className="text-studio-white">
+                {renderHighlightedText(cTitle)}
+              </Heading>
+            )}
             {cSub && (
               <Text className="max-w-3xl text-subtitle font-light leading-illustrator tracking-wide text-studio-cta-sub">
                 {renderHighlightedText(cSub)}
               </Text>
             )}
-            <div className="flex w-full justify-start pt-4 sm:w-auto">
-              <LocalizedLink href={data.ctaBtnLink || "/"}>
-                <Magnetic>
-                  <Button variant="tertiary" className="studio-button text-button">
-                    {cBtnFinal}
-                  </Button>
-                </Magnetic>
-              </LocalizedLink>
-            </div>
+            {cBtnFinal && (
+              <div className="flex w-full justify-start pt-4 sm:w-auto">
+                <LocalizedLink href={data?.ctaBtnLink || "/"}>
+                  <Magnetic>
+                    <Button variant="tertiary" className="studio-button text-button">
+                      {cBtnFinal}
+                    </Button>
+                  </Magnetic>
+                </LocalizedLink>
+              </div>
+            )}
           </div>
         </CtaCard>
       </Section>

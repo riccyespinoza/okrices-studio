@@ -7,24 +7,25 @@ import FadeIn from "@/components/FadeIn";
 import TextReveal from "@/components/TextReveal";
 import Magnetic from "@/components/Magnetic";
 import HeroGlow from "@/components/FluidHero";
-import GlowCard from "@/components/GlowCard";
 import CtaCard from "@/components/CtaCard";
-import LocalizedLink from "@/components/LocalizedLink"; // Importante: Importamos el componente
+import LocalizedLink from "@/components/LocalizedLink";
 
 async function getServicesPageData() {
   const query = `*[_type == "servicesPage"][0]{
     heroTitleEs, heroSubtitleEs, heroBtnMainEs, heroBtnSecEs, heroBtnMainLink, heroBtnSecLink,
     heroTitleEn, heroSubtitleEn, heroBtnMainEn, heroBtnSecEn,
     servicesList[]{
-      titleEs, textEs, includedEs, ctaEs, titleEn, textEn, includedEn, ctaEn, "imageUrl": image.asset->url,
-      sectionCtaTitleEs, sectionCtaTextEs, sectionCtaBtnEs, sectionCtaLink,
-      sectionCtaTitleEn, sectionCtaTextEn, sectionCtaBtnEn,
-      packages[]{ 
-        titleEn, textEn, priceEn, deliveryEn, detailsEn, ctaEn, ctaLink,
-        titleEs, textEs, priceEs, deliveryEs, detailsEs, ctaEs, featured 
+      titleEs, subtitleEs, forYouListEs, includesTitleEs, includesListEs, developTitleEs,
+      titleEn, subtitleEn, forYouListEn, includesTitleEn, includesListEn, developTitleEn,
+      extraNoteEs, extraNoteEn, ctaTextEs, ctaTextEn, ctaLink,
+      "imageUrl": image.asset->url,
+      developItems[]{
+        "iconUrl": iconSvg.asset->url,
+        textEs, textEn
       }
     },
-    ctaTitleEs, ctaSubtitleEs, ctaBtnEs, ctaBtnLink, ctaTitleEn, ctaSubtitleEn, ctaBtnEn
+    ctaTitleEs, ctaSubtitleEs, ctaBtnEs, ctaBtnLink,
+    ctaTitleEn, ctaSubtitleEn, ctaBtnEn
   }`;
   return await client.fetch(query);
 }
@@ -32,170 +33,255 @@ async function getServicesPageData() {
 function renderHighlightedText(rawText) {
   if (!rawText) return "";
   const parts = rawText.split(/\*\*([^*]+)\*\*/g);
-  return parts.map((part, index) => index % 2 === 1 ? <span key={index} className="text-studio-copper font-medium">{part}</span> : part);
+  return parts.map((part, index) =>
+    index % 2 === 1 ? (
+      <span key={index} className="text-studio-copper font-medium">
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
 }
 
 export default async function ServicesPage({ params }) {
   const { locale } = await params;
   const data = await getServicesPageData();
+
   if (!data) return <main className="min-h-screen bg-studio-blue" />;
+
+  const isEn = locale === "en";
 
   return (
     <main className="studio-main-container">
-      {/* Hero Principal */}
+      {/* 1. HERO PRINCIPAL DE SERVICIOS */}
       <HeroGlow>
         <Section className="flex min-h-[95vh] flex-col items-start justify-center gap-12 pb-20 pt-32">
           <div className="max-w-5xl space-y-8">
-            <TextReveal text={locale === "en" ? data.heroTitleEn : data.heroTitleEs} className="text-hero font-sans font-semibold leading-none tracking-[-0.03em] text-studio-white" />
+            <TextReveal
+              text={isEn ? data.heroTitleEn : data.heroTitleEs}
+              className="text-hero font-sans font-semibold leading-none tracking-[-0.03em] text-studio-white"
+            />
             <div className="max-w-3xl text-hero-subtitle font-light leading-relaxed tracking-wide text-studio-white">
-              {renderHighlightedText(locale === "en" ? data.heroSubtitleEn : data.heroSubtitleEs)}
+              {renderHighlightedText(isEn ? data.heroSubtitleEn : data.heroSubtitleEs)}
             </div>
           </div>
 
           <FadeIn delay={0.7} direction="up" className="flex w-full flex-col items-center gap-6 sm:w-auto sm:flex-row">
-            <LocalizedLink href={data.heroBtnMainLink || "/"}>
-              <Magnetic>
-                <Button variant="primary" className="studio-button text-button w-full sm:w-auto">
-                  {locale === "en" ? data.heroBtnMainEn : data.heroBtnMainEs}
-                </Button>
-              </Magnetic>
-            </LocalizedLink>
-            <LocalizedLink href={data.heroBtnSecLink || "/"}>
-              <Magnetic>
-                <Button variant="secondary" className="studio-button text-button w-full border border-studio-white/20 text-studio-white/80 hover:border-studio-white hover:text-studio-white sm:w-auto">
-                  {locale === "en" ? data.heroBtnSecEn : data.heroBtnSecEs}
-                </Button>
-              </Magnetic>
-            </LocalizedLink>
+            {(isEn ? data.heroBtnMainEn : data.heroBtnMainEs) && (
+              <LocalizedLink href={data.heroBtnMainLink || "/contact"}>
+                <Magnetic>
+                  <Button variant="primary" className="studio-button text-button w-full sm:w-auto">
+                    {isEn ? data.heroBtnMainEn : data.heroBtnMainEs}
+                  </Button>
+                </Magnetic>
+              </LocalizedLink>
+            )}
+            {(isEn ? data.heroBtnSecEn : data.heroBtnSecEs) && (
+              <LocalizedLink href={data.heroBtnSecLink || "/work"}>
+                <Magnetic>
+                  <Button
+                    variant="secondary"
+                    className="studio-button text-button w-full border border-studio-white/20 text-studio-white/80 hover:border-studio-white hover:text-studio-white sm:w-auto"
+                  >
+                    {isEn ? data.heroBtnSecEn : data.heroBtnSecEs}
+                  </Button>
+                </Magnetic>
+              </LocalizedLink>
+            )}
           </FadeIn>
         </Section>
       </HeroGlow>
 
-      {/* Servicios */}
-      <Section className="studio-section-divider space-y-32">
-        {data.servicesList?.map((service, serviceIndex) => {
-          const serviceTitle = locale === "en" ? service.titleEn : service.titleEs;
-          const serviceText = locale === "en" ? service.textEn : service.textEs;
-          const serviceIncluded = locale === "en" ? service.includedEn : service.includedEs;
-          const sectionCtaTitle = locale === "en" ? service.sectionCtaTitleEn : service.sectionCtaTitleEs;
-          const sectionCtaText = locale === "en" ? service.sectionCtaTextEn : service.sectionCtaTextEs;
-          const sectionCtaButton = locale === "en" ? service.sectionCtaBtnEn : service.sectionCtaBtnEs;
+      {/* 2. BLOQUES DE SERVICIOS INDIVIDUALES */}
+      <Section className="studio-section-divider space-y-24 md:space-y-36">
+        {data.servicesList?.map((service, index) => {
+          const title = isEn ? service.titleEn : service.titleEs;
+          const subtitle = isEn ? service.subtitleEn : service.subtitleEs;
+          const forYouList = isEn ? service.forYouListEn : service.forYouListEs;
 
-          const totalPackages = service.packages?.length || 0;
-          const gridColsClass = totalPackages === 4 ? "md:grid-cols-4" : "md:grid-cols-3";
+          const includesTitle = isEn ? service.includesTitleEn : service.includesTitleEs;
+          const includesList = isEn ? service.includesListEn : service.includesListEs;
+
+          const developTitle = isEn ? service.developTitleEn : service.developTitleEs;
+          const developItems = service.developItems || [];
+
+          const extraNote = isEn ? service.extraNoteEn : service.extraNoteEs;
+          const ctaText = isEn ? service.ctaTextEn : service.ctaTextEs;
+
+          // Alternancia de posición de columna para escritorio (Zig-Zag)
+          const isEven = index % 2 === 0;
+          const imageOrderClass = isEven ? "lg:order-1" : "lg:order-2";
+          const contentOrderClass = isEven ? "lg:order-2" : "lg:order-1";
 
           return (
-            <div key={serviceIndex} className="space-y-16 py-12">
-              <FadeIn direction="up">
-                <div className={`flex flex-col items-center gap-12 ${serviceIndex % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
-                  <div className="w-full space-y-6 md:w-1/2">
-                    <Heading level={2} className="text-studio-copper">{renderHighlightedText(serviceTitle)}</Heading>
-                    <Text className="text-subtitle font-light leading-illustrator text-studio-white">{renderHighlightedText(serviceText)}</Text>
-                    {serviceIncluded?.length > 0 && (
-                      <ul className="space-y-3 pt-2">
-                        {serviceIncluded.map((item, itemIndex) => (
-                          <li key={itemIndex} className="flex items-start gap-3 font-sans text-support font-light leading-illustrator text-studio-white/80">
-                            <span aria-hidden="true" className="shrink-0 text-studio-copper">✦</span>
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
+            <FadeIn key={index} direction="up">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+               {/* Columna Imagen del servicio */}
+{service.imageUrl && (
+  <div className={`lg:col-span-5 w-full ${imageOrderClass}`}>
+    <div className="studio-media-window aspect-[4/4] w-full sticky top-28">
+      <img
+        src={service.imageUrl}
+        alt={title || "Service media"}
+        className="h-full w-full object-cover"
+      />
+    </div>
+  </div>
+)}
+
+                {/* Columna Contenido completo */}
+                <div
+                  className={`${
+                    service.imageUrl ? "lg:col-span-7" : "lg:col-span-12"
+                  } space-y-8 ${contentOrderClass}`}
+                >
+                  {/* Encabezado del Servicio */}
+                  <div className="space-y-4">
+                    <Heading level={2} className="text-studio-copper text-3xl sm:text-4xl font-semibold leading-tight">
+                      {renderHighlightedText(title)}
+                    </Heading>
+
+                    {subtitle && (
+                      <Text className="text-lg sm:text-xl font-light leading-relaxed text-studio-white/90">
+                        {renderHighlightedText(subtitle)}
+                      </Text>
                     )}
                   </div>
-                  <div className="aspect-[4/3] w-full md:w-1/2">
-                    {service.imageUrl ? <img src={service.imageUrl} alt={serviceTitle || ""} className="h-full w-full rounded-xl object-cover" /> : 
-                     <div className="flex h-full w-full items-center justify-center rounded-xl border border-studio-white/[0.05] bg-studio-white/[0.02]"><span className="text-micro font-sans uppercase tracking-[0.2em] text-studio-white/20">Visual Media Missing</span></div>}
-                  </div>
-                </div>
-              </FadeIn>
 
-              {/* Paquetes */}
-              {service.packages?.length > 0 && (
-                <div className="space-y-8">
-                  <div className={`grid grid-cols-1 gap-6 ${gridColsClass}`}>
-                    {service.packages.map((pkg, pkgIndex) => {
-                      const pTitle = locale === "en" ? pkg.titleEn : pkg.titleEs;
-                      const pText = locale === "en" ? pkg.textEn : pkg.textEs;
-                      const pPrice = locale === "en" ? pkg.priceEn : pkg.priceEs;
-                      const pDelivery = locale === "en" ? pkg.deliveryEn : pkg.deliveryEs;
-                      const pDetails = locale === "en" ? pkg.detailsEn : pkg.detailsEs;
-                      const pCta = locale === "en" ? pkg.ctaEn : pkg.ctaEs;
-                      
-                      return (
-                        <FadeIn key={pkgIndex} delay={pkgIndex * 0.1} direction="up" className="h-full">
-                          <GlowCard className={`h-full min-h-[520px] ${pkg.featured ? "border-studio-copper shadow-[0_0_30px_rgba(165,81,48,0.15)]" : ""}`}>
-                            <div className="flex h-full flex-col p-1">
-                              <div className="mb-6 flex items-start justify-between gap-3 md:min-h-[3.5rem]">
-                                <Heading level={3} className="text-studio-white transition-colors group-hover:text-studio-copper">{pTitle}</Heading>
-                                {pkg.featured && <span className="shrink-0 rounded-full bg-studio-copper/10 px-3 py-1 font-sans text-micro font-medium uppercase tracking-widest text-studio-copper">Popular</span>}
-                              </div>
-                              <div className="md:min-h-[9rem]"><Text className="text-body-large font-light leading-illustrator text-studio-card-text">{renderHighlightedText(pText)}</Text></div>
-                              <div className="mt-8 flex flex-1 flex-col border-t border-studio-white/10 pt-6">
-                                {pDetails?.length > 0 && <ul className="space-y-3">{pDetails.map((d, i) => <li key={i} className="flex items-start gap-3 font-sans text-support font-light leading-illustrator text-studio-white/80"><span aria-hidden="true" className="shrink-0 text-studio-copper">●</span><span>{d}</span></li>)}</ul>}
-                                {(pPrice || pDelivery) && (
-                                  <div className="mt-auto space-y-2 pt-8">
-                                    {pPrice && <p className="font-sans text-body-large font-medium leading-illustrator text-studio-copper">{pPrice}</p>}
-                                    {pDelivery && <p className="font-sans text-support font-light leading-illustrator text-studio-white/50">{pDelivery}</p>}
-                                  </div>
-                                )}
-                              </div>
-                              {pCta && (
-                                <div className="w-full pt-8">
-                                  <LocalizedLink href={pkg.ctaLink || "/"}>
-                                    <Button variant={pkg.featured ? "primary" : "secondary"} className="studio-button text-button w-full">{pCta}</Button>
-                                  </LocalizedLink>
-                                </div>
-                              )}
-                            </div>
-                          </GlowCard>
-                        </FadeIn>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+                  {/* Sub-columnas de Listados (Sin líneas divisorias superior) */}
+                  {(forYouList?.length > 0 || includesList?.length > 0) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {/* Columna A: Para ti si... */}
+                      {forYouList?.length > 0 && (
+                        <div className="space-y-4">
+                          <Heading level={4} className="font-sans text-sm sm:text-base font-medium text-studio-copper uppercase tracking-wider">
+                            {isEn ? "This service is for you if:" : "Este servicio es para ti si:"}
+                          </Heading>
+                          <ul className="space-y-3">
+                            {forYouList.map((item, itemIdx) => (
+                              <li key={itemIdx} className="flex items-start gap-3 font-sans text-sm sm:text-base font-light text-studio-white/80 leading-relaxed">
+                                <span aria-hidden="true" className="shrink-0 text-studio-copper mt-1">●</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
 
-              {sectionCtaTitle && (
-                <FadeIn direction="up" className="pt-4">
-                  <CtaCard variant="secondary">
-                    <div className="flex w-full flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-                      <div className="max-w-3xl space-y-4">
-                        <Heading level={3} className="text-studio-white">{renderHighlightedText(sectionCtaTitle)}</Heading>
-                        {sectionCtaText && <Text className="text-body-large font-light leading-illustrator text-studio-white/80">{renderHighlightedText(sectionCtaText)}</Text>}
-                      </div>
-                      {sectionCtaButton && (
-                         <LocalizedLink href={service.sectionCtaLink || "/"}>
-                            <Magnetic><Button variant="secondary" className="studio-button text-button whitespace-nowrap">{sectionCtaButton}</Button></Magnetic>
-                         </LocalizedLink>
+                      {/* Columna B: Entregables / Incluye */}
+                      {includesList?.length > 0 && (
+                        <div className="space-y-4">
+                          {includesTitle && (
+                            <Heading level={4} className="font-sans text-sm sm:text-base font-medium text-studio-copper uppercase tracking-wider">
+                              {includesTitle}
+                            </Heading>
+                          )}
+                          <ul className="space-y-3">
+                            {includesList.map((item, itemIdx) => (
+                              <li key={itemIdx} className="flex items-start gap-3 font-sans text-sm sm:text-base font-light text-studio-white/80 leading-relaxed">
+                                <span aria-hidden="true" className="shrink-0 text-studio-copper mt-1">●</span>
+                                <span>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       )}
                     </div>
-                  </CtaCard>
-                </FadeIn>
-              )}
-            </div>
+                  )}
+
+                  {/* Desarrollos en Mini Cards (Cuadradas, Ícono arriba del texto, 1 sola fila de 4) */}
+                  {developItems?.length > 0 && (
+                    <div className="space-y-4">
+                      {developTitle && (
+                        <Heading level={4} className="font-sans text-sm sm:text-base font-medium text-studio-copper uppercase tracking-wider">
+                          {developTitle}
+                        </Heading>
+                      )}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        {developItems.map((item, itemIdx) => {
+                          const itemText = isEn ? item.textEn : item.textEs;
+                          return (
+                            <div
+                              key={itemIdx}
+                              className="flex flex-col items-start gap-3 p-4 sm:p-5 rounded-studio bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm transition-all duration-300 hover:border-studio-copper/40 hover:bg-white/[0.05]"
+                            >
+                              {item.iconUrl ? (
+                                <div
+                                  className="w-7 h-7 bg-studio-icon-gradient select-none shrink-0"
+                                  style={{
+                                    maskImage: `url(${item.iconUrl})`,
+                                    WebkitMaskImage: `url(${item.iconUrl})`,
+                                    maskRepeat: "no-repeat",
+                                    WebkitMaskRepeat: "no-repeat",
+                                    maskPosition: "center",
+                                    WebkitMaskPosition: "center",
+                                    maskSize: "contain",
+                                    WebkitMaskSize: "contain",
+                                  }}
+                                />
+                              ) : (
+                                <span aria-hidden="true" className="shrink-0 text-studio-copper text-lg">●</span>
+                              )}
+                              <span className="font-sans text-sm font-light text-studio-white/90 leading-snug">
+                                {itemText}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Nota Adicional Transversal */}
+                  {extraNote && (
+                    <div className="border-l-2 border-studio-copper/50 pl-4 py-2 bg-studio-white/[0.02] rounded-r-studio">
+                      <p className="font-sans text-sm sm:text-base font-light italic text-studio-white/70 leading-relaxed">
+                        {renderHighlightedText(extraNote)}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Botón CTA del Servicio */}
+                  {ctaText && (
+                    <div className="pt-2">
+                      <LocalizedLink href={service.ctaLink || "/contact"}>
+                        <Magnetic>
+                          <Button variant="primary" className="studio-button text-button w-full sm:w-auto">
+                            {ctaText}
+                          </Button>
+                        </Magnetic>
+                      </LocalizedLink>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </FadeIn>
           );
         })}
       </Section>
 
-      {/* CTA Final */}
+      {/* 3. CTA FINAL */}
       <Section className="py-24 md:py-32">
         <CtaCard variant="primary">
           <div className="max-w-4xl space-y-8">
             <Heading level={2} className="text-studio-white">
-              {renderHighlightedText(locale === "en" ? data.ctaTitleEn : data.ctaTitleEs)}
+              {renderHighlightedText(isEn ? data.ctaTitleEn : data.ctaTitleEs)}
             </Heading>
             <Text className="max-w-3xl text-subtitle font-light leading-illustrator tracking-wide text-studio-cta-sub">
-              {renderHighlightedText(locale === "en" ? data.ctaSubtitleEn : data.ctaSubtitleEs)}
+              {renderHighlightedText(isEn ? data.ctaSubtitleEn : data.ctaSubtitleEs)}
             </Text>
-            <LocalizedLink href={data.ctaBtnLink || "/"}>
-              <div className="flex w-full justify-start pt-4 sm:w-auto">
-                <Magnetic>
-                  <Button variant="tertiary" className="studio-button text-button">
-                    {locale === "en" ? data.ctaBtnEn : data.ctaBtnEs}
-                  </Button>
-                </Magnetic>
-              </div>
-            </LocalizedLink>
+            {(isEn ? data.ctaBtnEn : data.ctaBtnEs) && (
+              <LocalizedLink href={data.ctaBtnLink || "/contact"}>
+                <div className="flex w-full justify-start pt-4 sm:w-auto">
+                  <Magnetic>
+                    <Button variant="tertiary" className="studio-button text-button">
+                      {isEn ? data.ctaBtnEn : data.ctaBtnEs}
+                    </Button>
+                  </Magnetic>
+                </div>
+              </LocalizedLink>
+            )}
           </div>
         </CtaCard>
       </Section>

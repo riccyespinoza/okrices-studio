@@ -77,29 +77,7 @@ export const homeSchema = {
       ]
     },
 
-    // --- 3. MÉTODO DE TRABAJO ---
-    { name: 'methodTitleEs', title: '3. Método: Título Sección (Español)', type: 'string' },
-    { name: 'methodTitleEn', title: '3. Método: Título Sección (Inglés)', type: 'string' },
-    {
-      name: 'methodList',
-      title: '3. Método: Lista de Pasos',
-      type: 'array',
-      of: [
-        {
-          type: 'object',
-          title: 'Paso del Proceso',
-          fields: [
-            { name: 'stepNumber', title: 'Número de Paso (Ej: 01)', type: 'string' },
-            { name: 'titleEs', title: 'Título (Español)', type: 'string' },
-            { name: 'titleEn', title: 'Título (Inglés)', type: 'string' },
-            { name: 'descriptionEs', title: 'Descripción (Español)', type: 'text' },
-            { name: 'descriptionEn', title: 'Descripción (Inglés)', type: 'text' }
-          ]
-        }
-      ]
-    },
-
-    // --- 4. PROYECTOS SELECCIONADOS ---
+     // --- 3. PROYECTOS SELECCIONADOS ---
     { name: 'projectsTitleEs', title: '4. Proyectos: Título Sección (Español)', type: 'string' },
     { name: 'projectsSubtitleEs', title: '4. Proyectos: Subtítulo Sección (Español)', type: 'text' },
     { name: 'projectsTitleEn', title: '4. Proyectos: Título Sección (Inglés)', type: 'string' },
@@ -137,6 +115,30 @@ export const homeSchema = {
       ]
     },
     { name: 'projectsBtnLink', title: '4. Proyectos: Enlace Botón Ver Todos (Ej: /proyectos)', type: 'string' },
+
+   // --- 4. MÉTODO DE TRABAJO ---
+    { name: 'methodTitleEs', title: '3. Método: Título Sección (Español)', type: 'string' },
+    { name: 'methodTitleEn', title: '3. Método: Título Sección (Inglés)', type: 'string' },
+    { name: 'methodSubtitleEs', title: '3. Método: Subtítulo Sección (Español)', type: 'text' },
+{ name: 'methodSubtitleEn', title: '3. Método: Subtítulo Sección (Inglés)', type: 'text' },
+    {
+      name: 'methodList',
+      title: '3. Método: Lista de Pasos',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          title: 'Paso del Proceso',
+          fields: [
+            { name: 'stepNumber', title: 'Número de Paso (Ej: 01)', type: 'string' },
+            { name: 'titleEs', title: 'Título (Español)', type: 'string' },
+            { name: 'titleEn', title: 'Título (Inglés)', type: 'string' },
+            { name: 'descriptionEs', title: 'Descripción (Español)', type: 'text' },
+            { name: 'descriptionEn', title: 'Descripción (Inglés)', type: 'text' }
+          ]
+        }
+      ]
+    },
 
     // --- 5. TESTIMONIOS O CONFIANZA ---
     { name: 'trustTitleEs', title: '5. Confianza: Título Sección (Español)', type: 'string' },

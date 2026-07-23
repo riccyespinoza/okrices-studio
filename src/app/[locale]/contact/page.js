@@ -12,8 +12,6 @@ async function getContactPageData() {
     heroTitleEs, heroSubtitleEs, heroTitleEn, heroSubtitleEn,
     formTitleEs, formHelperEs, responseTitleEs, responseTextEs,
     formTitleEn, formHelperEn, responseTitleEn, responseTextEn,
-    directTitleEs, directTextEs, directTitleEn, directTextEn,
-    filterTitleEs, filterTextEs, filterTitleEn, filterTextEn,
     ctaTitleEs, ctaBtnEs, ctaTitleEn, ctaBtnEn
   }`;
   return await client.fetch(query);
@@ -60,7 +58,7 @@ export default async function ContactPage({ params }) {
               </FadeIn>
             </div>
 
-            {/* Lista de Canales de Contacto Directo (Fluido sin bordes ni títulos secundarios) */}
+            {/* Lista de Canales de Contacto Directo y Redes Sociales */}
             <FadeIn direction="up" delay={0.3}>
               <div className="space-y-6">
                 
@@ -79,33 +77,45 @@ export default async function ContactPage({ params }) {
                   </div>
                 </div>
 
-                {/* Calendly */}
+                {/* Instagram */}
                 <div className="flex items-center gap-5 group">
                   <div className="w-11 h-11 rounded-full border border-studio-white/10 flex items-center justify-center text-studio-copper bg-studio-white/[0.02] transition-colors duration-300 group-hover:border-studio-copper/30">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
                   <div>
-                    <h4 className="text-studio-white/40 font-light text-micro uppercase tracking-widest">{isEn ? "Digital Meeting" : "Cita Digital"}</h4>
-                    <span className="text-support text-studio-white font-medium tracking-wide mt-0.5 block transition-colors duration-300 group-hover:text-studio-copper cursor-pointer">
-                      {isEn ? "Schedule a Call via Calendly" : "Agendar Llamada vía Calendly"}
-                    </span>
+                    <h4 className="text-studio-white/40 font-light text-micro uppercase tracking-widest">Instagram</h4>
+                    <a 
+                      href="https://www.instagram.com/okrices.studio/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-support text-studio-white font-medium tracking-wide mt-0.5 block transition-colors duration-300 hover:text-studio-copper"
+                    >
+                      @okrices.studio
+                    </a>
                   </div>
                 </div>
 
-                {/* WhatsApp */}
+                {/* Facebook */}
                 <div className="flex items-center gap-5 group">
                   <div className="w-11 h-11 rounded-full border border-studio-white/10 flex items-center justify-center text-studio-copper bg-studio-white/[0.02] transition-colors duration-300 group-hover:border-studio-copper/30">
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-4h3l1-4h-4V7a1 1 0 011-1h3z" />
                     </svg>
                   </div>
                   <div>
-                    <h4 className="text-studio-white/40 font-light text-micro uppercase tracking-widest">WhatsApp</h4>
-                    <span className="text-support text-studio-white font-medium tracking-wide mt-0.5 block transition-colors duration-300 group-hover:text-studio-copper cursor-pointer">
-                      {isEn ? "Direct Instant Message" : "Mensaje directo inmediato"}
-                    </span>
+                    <h4 className="text-studio-white/40 font-light text-micro uppercase tracking-widest">Facebook</h4>
+                    <a 
+                      href="https://www.facebook.com/okrices.studio" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="text-support text-studio-white font-medium tracking-wide mt-0.5 block transition-colors duration-300 hover:text-studio-copper"
+                    >
+                      Okrices Studio
+                    </a>
                   </div>
                 </div>
 
@@ -117,12 +127,9 @@ export default async function ContactPage({ params }) {
           <div className="lg:col-span-7 space-y-8">
             <FadeIn direction="up" delay={0.1}>
               <GlowCard className="p-8 md:p-12">
-                {/* Formulario puro sin títulos internos */}
                 <ContactForm locale={locale} ctaBtnText={isEn ? data.ctaBtnEn : data.ctaBtnEs} />
               </GlowCard>
             </FadeIn>
-
-            
           </div>
 
         </div>
