@@ -84,7 +84,7 @@ export default async function HomePage({ params }) {
       {/* SECCIÓN 1: HERO */}
       <HeroGlow>
         <Section className="flex flex-col items-start justify-center min-h-[95vh] gap-12 pt-32 pb-20">
-          <div className="max-w-5xl space-y-8">
+          <div className="max-w-5xl space-y-4">
             {hTitle && <TextReveal text={hTitle} className="text-hero font-sans font-semibold tracking-[-0.03em] leading-none text-white" />}
             {hSub && (
               <div className="max-w-2xl text-hero-subtitle text-white font-light leading-relaxed tracking-wide">
@@ -115,27 +115,9 @@ export default async function HomePage({ params }) {
         </Section>
       </HeroGlow>
 
-      {/* SECCIÓN 1.5: LOGOS DE CLIENTES (MARQUEE) */}
-      {/* {logos.length > 0 && (
-        <Section className="py-12 border-y border-white/[0.06] overflow-hidden">
-          <div className="flex w-full overflow-hidden select-none">
-            <div className="flex shrink-0 items-center justify-around gap-12 min-w-full animate-marquee">
-              {logos.map((item, idx) => (
-                <img key={idx} src={item.imageUrl} alt={item.altText || "Client Logo"} className="h-8 md:h-10 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300" />
-              ))}
-            </div>
-            <div className="flex shrink-0 items-center justify-around gap-12 min-w-full animate-marquee" aria-hidden="true">
-              {logos.map((item, idx) => (
-                <img key={`dup-${idx}`} src={item.imageUrl} alt={item.altText || "Client Logo"} className="h-8 md:h-10 w-auto object-contain opacity-50 grayscale hover:opacity-100 hover:grayscale-0 transition-all duration-300" />
-              ))}
-            </div>
-          </div>
-        </Section>
-      )} */}
-
       {/* SECCIÓN 2: SERVICIOS */}
       <Section className="studio-section-divider">
-        <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
+        <FadeIn direction="up" className="max-w-3xl space-y-4 studio-title-gap">
           {sTitle && (
             <Heading level={2} className="text-studio-copper">
               {renderHighlightedText(sTitle)}
@@ -151,7 +133,7 @@ export default async function HomePage({ params }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           {services.map((item, index) => (
             <FadeIn key={index} delay={index * 0.1} direction="up" className="col-span-1 h-full">
-              <GlowCard className="min-h-[440px] h-full">
+              <GlowCard className="min-h-0 md:min-h-[440px] h-full">
                 <div className="flex flex-col h-full items-start p-1">
                   {item.iconUrl ? (
                     <div 
@@ -173,17 +155,17 @@ export default async function HomePage({ params }) {
                     </div>
                   )}
 
-                  <div className="w-full h-[3.5rem] md:h-[6.5rem] mb-6 flex items-start flex-shrink-0">
+                  <div className="w-full mb-2 flex items-start flex-shrink-0">
                     <Heading level={3} className="text-white group-hover:text-studio-copper transition-colors leading-tight">
                       {locale === "en" ? item.titleEn : item.titleEs}
                     </Heading>
                   </div>
                   
-                  <p className="font-sans font-light text-body-large text-studio-card-text text-left flex-grow">
+                  <p className="font-sans font-light text-body-large text-studio-card-text text-left flex-grow-0 md:flex-grow">
                     {renderHighlightedText(locale === "en" ? item.descriptionEn : item.descriptionEs)}
                   </p>
                   
-                  <div className="pt-8 mt-auto w-full flex justify-start flex-shrink-0">
+                  <div className="studio-card-button-gap md:mt-auto w-full flex justify-start flex-shrink-0">
                     <LocalizedLink href={item.ctaLink || "/"}>
                       <Button variant="primary" className="w-full sm:w-auto text-button font-medium">
                         {locale === "en" ? item.ctaEn : item.ctaEs}
@@ -199,7 +181,7 @@ export default async function HomePage({ params }) {
 
       {/* SECCIÓN 3: PROYECTOS SELECCIONADOS */}
       <Section className="studio-section-divider">
-        <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
+        <FadeIn direction="up" className="max-w-3xl space-y-4 studio-title-gap">
           {pTitle && (
             <Heading level={2} className="text-studio-copper">
               {renderHighlightedText(pTitle)}
@@ -269,7 +251,7 @@ export default async function HomePage({ params }) {
 
       {/* SECCIÓN 4: MÉTODO DE TRABAJO */}
       <Section className="studio-section-divider">
-        <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
+        <FadeIn direction="up" className="max-w-3xl space-y-4 studio-title-gap">
           {mTitle && (
             <Heading level={2} className="text-studio-copper">
               {renderHighlightedText(mTitle)}
@@ -307,7 +289,7 @@ export default async function HomePage({ params }) {
 
       {/* SECCIÓN 5: TESTIMONIOS */}
       <Section className="studio-section-divider overflow-hidden">
-        <FadeIn direction="up" className="max-w-3xl space-y-4 mb-20">
+        <FadeIn direction="up" className="max-w-3xl space-y-4 studio-title-gap">
           {tTitle && (
             <Heading level={2} className="text-studio-copper">
               {renderHighlightedText(tTitle)}

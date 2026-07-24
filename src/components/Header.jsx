@@ -43,6 +43,7 @@ export default function Header({ currentLocale }) {
   };
 
   return (
+    <>
     <motion.header
       variants={{
         visible: { y: 0 },
@@ -114,6 +115,7 @@ export default function Header({ currentLocale }) {
           </svg>
         </button>
       </div>
+    </motion.header>
 
       {/* Overlay Móvil */}
       <div 
@@ -157,6 +159,6 @@ export default function Header({ currentLocale }) {
           </a>
         </div>
       </div>
-    </motion.header>
+    </>
   );
 }
