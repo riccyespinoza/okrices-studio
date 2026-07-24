@@ -67,7 +67,7 @@ export default async function ServicesPage({ params }) {
             </div>
           </div>
 
-          <FadeIn delay={0.7} direction="up" className="flex w-full flex-col items-center gap-6 sm:w-auto sm:flex-row">
+          <FadeIn delay={0.7} direction="up" className="flex w-full flex-col items-start sm:items-center gap-6 sm:w-auto sm:flex-row">
             {(isEn ? data.heroBtnMainEn : data.heroBtnMainEs) && (
               <LocalizedLink href={data.heroBtnMainLink || "/contact"}>
                 <Magnetic>
@@ -129,131 +129,164 @@ export default async function ServicesPage({ params }) {
     </div>
   </div>
 )}
+{/* Columna Contenido completo */}
+<div
+  className={`${
+    service.imageUrl ? "lg:col-span-7" : "lg:col-span-12"
+  } space-y-8 ${contentOrderClass}`}
+>
+  {/* Encabezado del Servicio */}
+  <div className="space-y-4">
+    <Heading level={2} className="text-studio-copper">
+      {renderHighlightedText(title)}
+    </Heading>
 
-                {/* Columna Contenido completo */}
-                <div
-                  className={`${
-                    service.imageUrl ? "lg:col-span-7" : "lg:col-span-12"
-                  } space-y-8 ${contentOrderClass}`}
+    {subtitle && (
+      <Text className="text-white font-light text-subtitle leading-illustrator">
+        {renderHighlightedText(subtitle)}
+      </Text>
+    )}
+  </div>
+
+  {/* Subcolumnas de listados */}
+  {(forYouList?.length > 0 || includesList?.length > 0) && (
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+      {/* Columna A: Para ti si */}
+      {forYouList?.length > 0 && (
+        <div className="space-y-4">
+          <Heading level={3} className="text-white leading-tight">
+            {isEn
+              ? "This service is for you if:"
+              : "Este servicio es para ti si:"}
+          </Heading>
+
+          <ul className="space-y-3">
+            {forYouList.map((item, itemIdx) => (
+              <li
+                key={itemIdx}
+                className="flex items-start gap-3 font-sans font-light text-body-large text-studio-card-text text-left"
+              >
+                <span
+                  aria-hidden="true"
+                  className="mt-1 shrink-0 text-studio-copper"
                 >
-                  {/* Encabezado del Servicio */}
-                  <div className="space-y-4">
-                    <Heading level={2} className="text-studio-copper text-3xl sm:text-4xl font-semibold leading-tight">
-                      {renderHighlightedText(title)}
-                    </Heading>
+                  ●
+                </span>
 
-                    {subtitle && (
-                      <Text className="text-lg sm:text-xl font-light leading-relaxed text-studio-white/90">
-                        {renderHighlightedText(subtitle)}
-                      </Text>
-                    )}
-                  </div>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-                  {/* Sub-columnas de Listados (Sin líneas divisorias superior) */}
-                  {(forYouList?.length > 0 || includesList?.length > 0) && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {/* Columna A: Para ti si... */}
-                      {forYouList?.length > 0 && (
-                        <div className="space-y-4">
-                          <Heading level={4} className="font-sans text-sm sm:text-base font-medium text-studio-copper uppercase tracking-wider">
-                            {isEn ? "This service is for you if:" : "Este servicio es para ti si:"}
-                          </Heading>
-                          <ul className="space-y-3">
-                            {forYouList.map((item, itemIdx) => (
-                              <li key={itemIdx} className="flex items-start gap-3 font-sans text-sm sm:text-base font-light text-studio-white/80 leading-relaxed">
-                                <span aria-hidden="true" className="shrink-0 text-studio-copper mt-1">●</span>
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
+      {/* Columna B: Entregables / Incluye */}
+      {includesList?.length > 0 && (
+        <div className="space-y-4">
+          {includesTitle && (
+            <Heading level={3} className="text-white leading-tight">
+              {includesTitle}
+            </Heading>
+          )}
 
-                      {/* Columna B: Entregables / Incluye */}
-                      {includesList?.length > 0 && (
-                        <div className="space-y-4">
-                          {includesTitle && (
-                            <Heading level={4} className="font-sans text-sm sm:text-base font-medium text-studio-copper uppercase tracking-wider">
-                              {includesTitle}
-                            </Heading>
-                          )}
-                          <ul className="space-y-3">
-                            {includesList.map((item, itemIdx) => (
-                              <li key={itemIdx} className="flex items-start gap-3 font-sans text-sm sm:text-base font-light text-studio-white/80 leading-relaxed">
-                                <span aria-hidden="true" className="shrink-0 text-studio-copper mt-1">●</span>
-                                <span>{item}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  )}
+          <ul className="space-y-3">
+            {includesList.map((item, itemIdx) => (
+              <li
+                key={itemIdx}
+                className="flex items-start gap-3 font-sans font-light text-body-large text-studio-card-text text-left"
+              >
+                <span
+                  aria-hidden="true"
+                  className="mt-1 shrink-0 text-studio-copper"
+                >
+                  ●
+                </span>
 
-                  {/* Desarrollos en Mini Cards (Cuadradas, Ícono arriba del texto, 1 sola fila de 4) */}
-                  {developItems?.length > 0 && (
-                    <div className="space-y-4">
-                      {developTitle && (
-                        <Heading level={4} className="font-sans text-sm sm:text-base font-medium text-studio-copper uppercase tracking-wider">
-                          {developTitle}
-                        </Heading>
-                      )}
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        {developItems.map((item, itemIdx) => {
-                          const itemText = isEn ? item.textEn : item.textEs;
-                          return (
-                            <div
-                              key={itemIdx}
-                              className="flex flex-col items-start gap-3 p-4 sm:p-5 rounded-studio bg-white/[0.03] border border-white/[0.06] backdrop-blur-sm transition-all duration-300 hover:border-studio-copper/40 hover:bg-white/[0.05]"
-                            >
-                              {item.iconUrl ? (
-                                <div
-                                  className="w-7 h-7 bg-studio-icon-gradient select-none shrink-0"
-                                  style={{
-                                    maskImage: `url(${item.iconUrl})`,
-                                    WebkitMaskImage: `url(${item.iconUrl})`,
-                                    maskRepeat: "no-repeat",
-                                    WebkitMaskRepeat: "no-repeat",
-                                    maskPosition: "center",
-                                    WebkitMaskPosition: "center",
-                                    maskSize: "contain",
-                                    WebkitMaskSize: "contain",
-                                  }}
-                                />
-                              ) : (
-                                <span aria-hidden="true" className="shrink-0 text-studio-copper text-lg">●</span>
-                              )}
-                              <span className="font-sans text-sm font-light text-studio-white/90 leading-snug">
-                                {itemText}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  )}
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )}
 
-                  {/* Nota Adicional Transversal */}
-                  {extraNote && (
-                    <div className="border-l-2 border-studio-copper/50 pl-4 py-2 bg-studio-white/[0.02] rounded-r-studio">
-                      <p className="font-sans text-sm sm:text-base font-light italic text-studio-white/70 leading-relaxed">
-                        {renderHighlightedText(extraNote)}
-                      </p>
-                    </div>
-                  )}
+  {/* Desarrollos en Mini Cards */}
+  {developItems?.length > 0 && (
+    <div className="space-y-4">
+      {developTitle && (
+        <Heading level={3} className="text-white leading-tight">
+          {developTitle}
+        </Heading>
+      )}
 
-                  {/* Botón CTA del Servicio */}
-                  {ctaText && (
-                    <div className="pt-2">
-                      <LocalizedLink href={service.ctaLink || "/contact"}>
-                        <Magnetic>
-                          <Button variant="primary" className="studio-button text-button w-full sm:w-auto">
-                            {ctaText}
-                          </Button>
-                        </Magnetic>
-                      </LocalizedLink>
-                    </div>
-                  )}
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {developItems.map((item, itemIdx) => {
+          const itemText = isEn ? item.textEn : item.textEs;
+
+          return (
+            <div
+              key={itemIdx}
+              className="flex flex-col items-start gap-3 rounded-studio border border-white/[0.06] bg-white/[0.03] p-4 backdrop-blur-sm transition-all duration-300 hover:border-studio-copper/40 hover:bg-white/[0.05] sm:p-5"
+            >
+              {item.iconUrl ? (
+                <div
+                  className="h-7 w-7 shrink-0 select-none bg-studio-icon-gradient"
+                  style={{
+                    maskImage: `url(${item.iconUrl})`,
+                    WebkitMaskImage: `url(${item.iconUrl})`,
+                    maskRepeat: "no-repeat",
+                    WebkitMaskRepeat: "no-repeat",
+                    maskPosition: "center",
+                    WebkitMaskPosition: "center",
+                    maskSize: "contain",
+                    WebkitMaskSize: "contain",
+                  }}
+                />
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="shrink-0 text-lg text-studio-copper"
+                >
+                  ●
+                </span>
+              )}
+
+              <span className="font-sans font-light text-body-large text-studio-card-text text-left">
+                {itemText}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  )}
+
+  {/* Nota Adicional */}
+  {extraNote && (
+    <div className="rounded-r-studio border-l-2 border-studio-copper/50 bg-studio-white/[0.02] py-2 pl-4">
+      <p className="font-sans font-light italic text-body-large text-studio-card-text text-left">
+        {renderHighlightedText(extraNote)}
+      </p>
+    </div>
+  )}
+
+  {/* Botón CTA del Servicio */}
+  {ctaText && (
+    <div className="flex justify-center pt-2 sm:justify-start">
+      <LocalizedLink href={service.ctaLink || "/contact"}>
+        <Magnetic>
+          <Button
+            variant="primary"
+            className="studio-button text-button w-auto"
+          >
+            {ctaText}
+          </Button>
+        </Magnetic>
+      </LocalizedLink>
+    </div>
+  )}
+
                 </div>
               </div>
             </FadeIn>

@@ -1,21 +1,33 @@
 import React from "react";
 
-export function Heading({ level = 1, className = "", children, ...props }) {
-  // Base estructural limpia y tipografía sans oficial (Outfit) sin colisiones de color o interlineado
+export function Heading({
+  level = 1,
+  className = "",
+  children,
+  ...props
+}) {
   const baseStyles = "font-sans antialiased tracking-tight";
-  
-  // Mapeo directo y exclusivo a los tokens de fluid-typography declarados en globals.css
+
   const structuralDefaults = {
-    1: "text-hero font-semibold leading-none",                  // 70px - Hero Título Principal
-    2: "text-section font-semibold leading-illustrator",        // 65px - Títulos de Sección / Números Proceso
-    3: "text-card-title font-medium leading-illustrator",       // 40px - Títulos de Cards (Servicios, Proceso, Work)
+    1: "text-hero font-semibold leading-none",
+    2: "text-section font-semibold leading-illustrator",
+    3: "text-card-title font-medium leading-illustrator",
+    4: "text-support font-medium leading-illustrator",
   };
 
   const Tag = `h${level}`;
 
+  /*
+   * Si se utiliza un nivel todavía no definido, aplicamos el estilo
+   * secundario de level 4 en lugar de convertirlo accidentalmente
+   * en un título Hero.
+   */
+  const headingStyles =
+    structuralDefaults[level] || structuralDefaults[4];
+
   return (
-    <Tag 
-      className={`${baseStyles} ${structuralDefaults[level] || structuralDefaults[1]} ${className}`} 
+    <Tag
+      className={`${baseStyles} ${headingStyles} ${className}`}
       {...props}
     >
       {children}
@@ -23,11 +35,14 @@ export function Heading({ level = 1, className = "", children, ...props }) {
   );
 }
 
-export function Text({ className = "", children, ...props }) {
-  // Componente de texto atómico libre de opacidades duras y viewports fijos
+export function Text({
+  className = "",
+  children,
+  ...props
+}) {
   return (
-    <p 
-      className={`font-sans antialiased ${className}`} 
+    <p
+      className={`font-sans antialiased ${className}`}
       {...props}
     >
       {children}

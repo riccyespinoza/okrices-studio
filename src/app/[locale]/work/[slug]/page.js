@@ -46,13 +46,13 @@ export default async function ProjectCaseStudy({ params }) {
   return (
     <main className="studio-main-container">
       {/* SECCIÓN 1: HERO DE IMPACTO VISUAL (IMAGEN FULL-SCREEN EN ALTA DEFINICIÓN) */}
-      <section className="relative w-full h-screen overflow-hidden bg-[#0D1419]">
+      <section className="relative w-full overflow-hidden bg-[#0D1419] md:h-screen">
         {project.heroImageUrl && (
           <FadeIn direction="none" duration={1.4} className="w-full h-full">
             <img 
               src={project.heroImageUrl} 
               alt={`Mockup premium HD de ${project.name}`} 
-              className="w-full h-full object-cover"
+              className="block h-auto w-full object-contain md:h-full md:object-cover"
             />
           </FadeIn>
         )}
@@ -79,7 +79,7 @@ export default async function ProjectCaseStudy({ params }) {
           <div className="pt-2 md:pt-4">
             {descriptionText && (
               <FadeIn delay={0.3} direction="up">
-                <Text className="text-body-large text-studio-white/70 font-light leading-relaxed">
+                <Text className="text-subtitle text-studio-white/70 font-light leading-illustrator">
                   {renderHighlightedText(descriptionText)}
                 </Text>
               </FadeIn>

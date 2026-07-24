@@ -92,7 +92,7 @@ export default async function HomePage({ params }) {
               </div>
             )}
           </div>
-          <FadeIn delay={0.7} direction="up" className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto">
+          <FadeIn delay={0.7} direction="up" className="flex flex-col sm:flex-row items-start sm:items-center gap-6 w-full sm:w-auto">
             {hBtnMain && (
               <LocalizedLink href={data?.heroBtnMainLink || "/"}>
                 <Magnetic>

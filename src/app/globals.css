@@ -84,6 +84,7 @@ body {
   background-size: cover;
 }
 
+
 @keyframes marquee {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
@@ -139,4 +140,39 @@ body {
 /* === ESPACIADO RESPONSIVO TEXTO-BOTÓN EN TARJETAS === */
 @utility studio-card-button-gap {
   @apply pt-6 md:pt-8;
+}
+
+
+/* === AJUSTE TIPOGRÁFICO EXCLUSIVO PARA ESCRITORIO === */
+/*
+  Reduce aproximadamente un 35%:
+  - Los títulos que usan text-card-title.
+  - Los textos descriptivos que usan text-body-large.
+
+  No modifica móvil ni tablet.
+*/
+@media (min-width: 1024px) {
+  .text-card-title {
+  font-size: clamp(
+    0.9025rem,
+    calc(0.7125rem + 0.7125vw),
+    1.3933rem
+  ) !important;
+}
+
+  .text-body-large {
+  font-size: clamp(
+    0.8625rem,
+    calc(0.7475rem + 0.345vw),
+    1.168rem
+  ) !important;
+}
+
+.text-body-large {
+  line-height: var(--leading-illustrator);
+}
+
+.text-hero-subtitle {
+  line-height: var(--leading-illustrator);
+}
 }
